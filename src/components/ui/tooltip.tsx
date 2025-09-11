@@ -4,7 +4,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { cn } from "../../lib/utils"
 
 function TooltipProvider({
-  delayDuration = 0,
+  delayDuration = 200,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return (
@@ -34,7 +34,7 @@ function TooltipTrigger({
 
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 8,
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
@@ -44,13 +44,46 @@ function TooltipContent({
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
+          
+          "relative z-50 overflow-hidden rounded-xl border border-primary/20",
+          "bg-gradient-to-br from-popover via-popover to-popover/80",
+          "px-4 py-3 text-popover-foreground",
+          "backdrop-blur-md shadow-2xl",
+          
+          
+          "animate-in fade-in-0 zoom-in-95 duration-200",
+          "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:duration-150",
+          
+          
+          "data-[side=bottom]:slide-in-from-top-2",
+          "data-[side=left]:slide-in-from-right-2", 
+          "data-[side=right]:slide-in-from-left-2",
+          "data-[side=top]:slide-in-from-bottom-2",
+          
+          
+          "max-w-[280px] md:max-w-[320px]",
+          "text-balance text-sm font-medium leading-relaxed",
+          
           className
         )}
         {...props}
       >
-        {children}
-        <TooltipPrimitive.Arrow className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+        {/* Content with enhanced styling */}
+        <div className="relative">
+          {children}
+          
+          {/* Subtle gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 pointer-events-none rounded-lg" />
+        </div>
+        
+        {/* Enhanced arrow with gradient */}
+        <TooltipPrimitive.Arrow 
+          className={cn(
+            "fill-popover stroke-primary/20 stroke-1",
+            "drop-shadow-sm",
+            "z-50 size-3 rotate-45 rounded-sm"
+          )} 
+        />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   )

@@ -2,56 +2,133 @@
 
 @layer base {
   :root {
+    /* Main backgrounds */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 71.4% 4.1%;
+    
+    /* Primary - Electric Purple */
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - Bright Cyan */
+    --secondary: 189 94% 43%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Tertiary/Success - Emerald Green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Enhanced accent colors */
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 243 75% 59%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Status colors */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
+    /* Borders and inputs */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 243 75% 59%;
+    --radius: 0.75rem;
+    
+    /* Gradient colors for enhanced UI */
+    --gradient-from: 243 75% 59%;
+    --gradient-via: 189 94% 43%;
+    --gradient-to: 142 76% 36%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Dark mode backgrounds */
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    
+    /* Primary - Lighter electric purple for dark mode */
+    --primary: 243 75% 65%;
+    --primary-foreground: 224 71.4% 4.1%;
+    
+    /* Secondary - Bright cyan (slightly adjusted) */
+    --secondary: 189 94% 50%;
+    --secondary-foreground: 224 71.4% 4.1%;
+    
+    /* Tertiary/Success - Brighter emerald for dark mode */
+    --success: 142 76% 45%;
+    --success-foreground: 224 71.4% 4.1%;
+    
+    /* Enhanced dark mode colors */
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 243 75% 65%;
+    --accent-foreground: 224 71.4% 4.1%;
+    
+    /* Status colors for dark mode */
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --destructive-foreground: 210 20% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 224 71.4% 4.1%;
+    
+    /* Dark mode borders */
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 243 75% 65%;
+    
+    /* Dark mode gradients */
+    --gradient-from: 243 75% 65%;
+    --gradient-via: 189 94% 50%;
+    --gradient-to: 142 76% 45%;
   }
 }
 
-/* @layer base {
+@layer base {
   * {
-    @apply border-border;
+    @apply border-[hsl(var(--border))];
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
   }
-} */
+}
+
+/* Custom gradient utilities */
+@layer utilities {
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--gradient-from)), hsl(var(--gradient-via)));
+  }
+  
+  .gradient-secondary {
+    background: linear-gradient(135deg, hsl(var(--gradient-via)), hsl(var(--gradient-to)));
+  }
+  
+  .gradient-full {
+    background: linear-gradient(135deg, hsl(var(--gradient-from)), hsl(var(--gradient-via)), hsl(var(--gradient-to)));
+  }
+  
+  .gradient-radial {
+    background: radial-gradient(circle at center, hsl(var(--gradient-from) / 0.1), hsl(var(--gradient-via) / 0.05), transparent);
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--background) / 0.8);
+    border: 1px solid hsl(var(--border) / 0.2);
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  
+  .success-glow {
+    box-shadow: 0 0 20px hsl(var(--success) / 0.3);
+  }
+}

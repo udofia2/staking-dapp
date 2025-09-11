@@ -35,7 +35,7 @@ export function StakingForm() {
     setStakeAmount(tokenBalance);
   };
 
-    return (
+  return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -97,20 +97,20 @@ export function StakingForm() {
               hasInsufficientBalance ||
               parseFloat(stakeAmount) <= 0
             }
-            className="w-full"
+            className="w-full h-12 text-lg font-semibold gradient-primary hover:opacity-90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
           >
             {needsApproval ? 'Approve Tokens' : 'Stake Tokens'}
             {(isStaking || isApproving) && '...'}
           </Button>
 
           {needsApproval && (
-            <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+            <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50/80 to-cyan-50/80 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
               <InfoTooltip 
                 content="Token approval is a one-time transaction that allows the staking contract to transfer your tokens when you stake."
                 side="top"
               />
-              <p className="text-sm text-blue-700 dark:text-blue-400">
-                You need to approve tokens before staking
+              <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">
+                First-time approval required for staking ✨
               </p>
             </div>
           )}

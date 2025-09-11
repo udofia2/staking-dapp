@@ -10,6 +10,7 @@ export function UserPosition() {
   const { stakedAmount, pendingRewards, timeUntilUnlock, canWithdraw, isLoading } = useUserData();
   const { claimRewards, isPending } = useStaking();
 
+  
   if (isLoading) {
     return (
       <Card>
@@ -43,10 +44,10 @@ export function UserPosition() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 gap-6">
-          <div className="group p-5 rounded-xl bg-gradient-to-r from-blue-50/80 to-cyan-50/80 dark:from-blue-950/20 dark:to-cyan-950/20 border border-blue-200/50 dark:border-blue-800/30 hover:shadow-md transition-all duration-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-blue-700 dark:text-blue-300">
-                <Coins className="h-4 w-4" />
+          <div className="group p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 hover:border-primary/30 hover:shadow-xl hover:neon-glow transition-all duration-300 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                <Coins className="h-5 w-5" />
                 Staked Amount
               </div>
               <InfoTooltip 
@@ -54,15 +55,15 @@ export function UserPosition() {
                 side="left"
               />
             </div>
-            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 tracking-tight">
+            <p className="text-4xl font-bold gradient-primary bg-clip-text text-transparent tracking-tight">
               {formatTokenAmount(stakedAmount)} MTK
             </p>
           </div>
 
-          <div className="group p-5 rounded-xl bg-gradient-to-r from-green-50/80 to-emerald-50/80 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200/50 dark:border-green-800/30 hover:shadow-md transition-all duration-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-300">
-                <TrendingUp className="h-4 w-4" />
+          <div className="group p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-green-500/5 to-transparent border border-emerald-500/20 hover:border-emerald-500/30 hover:shadow-xl hover:success-glow transition-all duration-300 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                <TrendingUp className="h-5 w-5" />
                 Pending Rewards
               </div>
               <InfoTooltip 
@@ -70,15 +71,15 @@ export function UserPosition() {
                 side="left"
               />
             </div>
-            <p className="text-3xl font-bold text-green-600 dark:text-green-400 tracking-tight">
+            <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 tracking-tight">
               {formatTokenAmount(pendingRewards)} MTK
             </p>
           </div>
 
-          <div className="group p-5 rounded-xl bg-gradient-to-r from-orange-50/80 to-amber-50/80 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-200/50 dark:border-orange-800/30 hover:shadow-md transition-all duration-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-orange-700 dark:text-orange-300">
-                <Clock className="h-4 w-4" />
+          <div className="group p-6 rounded-2xl bg-gradient-to-br from-secondary/10 via-cyan-500/5 to-transparent border border-secondary/20 hover:border-secondary/30 hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-secondary">
+                <Clock className="h-5 w-5" />
                 Lock Status
               </div>
               <InfoTooltip 
@@ -86,31 +87,37 @@ export function UserPosition() {
                 side="left"
               />
             </div>
-            <p className={`text-xl font-bold tracking-tight ${canWithdraw ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}`}>
+            <p className={`text-2xl font-bold tracking-tight ${canWithdraw ? 'text-emerald-600 dark:text-emerald-400' : 'text-secondary'}`}>
               {canWithdraw ? 'Unlocked ✓' : formatTimeRemaining(timeUntilUnlock)}
             </p>
           </div>
         </div>
 
         {hasStake && (
-          <div className="pt-4 border-t">
+          <div className="pt-6 border-t border-primary/10">
             <Button 
               onClick={claimRewards}
               disabled={isPending || !hasRewards}
-              className="w-full"
+              className={`w-full h-12 text-lg font-semibold transition-all duration-300 ${
+                hasRewards 
+                  ? 'bg-emerald-600 hover:bg-emerald-700 shadow-lg hover:shadow-emerald-500/25' 
+                  : 'bg-muted hover:bg-muted/80'
+              }`}
               variant={hasRewards ? "default" : "outline"}
             >
-              {hasRewards ? 'Claim Rewards' : 'No Rewards Available'}
+              {hasRewards ? '🎉 Claim Rewards' : 'No Rewards Available'}
               {isPending && '...'}
             </Button>
           </div>
         )}
 
         {!hasStake && (
-          <div className="pt-4 border-t">
-            <p className="text-sm text-muted-foreground text-center">
-              No active stake position. Start staking to earn rewards!
-            </p>
+          <div className="pt-6 border-t border-border/50">
+            <div className="text-center p-6 rounded-xl bg-gradient-to-r from-muted/30 to-muted/10 border border-dashed border-muted-foreground/20">
+              <p className="text-muted-foreground font-medium">
+                No active stake position. Start staking to earn rewards! 🚀
+              </p>
+            </div>
           </div>
         )}
       </CardContent>

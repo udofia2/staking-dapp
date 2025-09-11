@@ -15,25 +15,29 @@ export function StakingDashboard() {
 
   if (!isConnected) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center gap-2">
-              <Wallet className="h-6 w-6" />
-              Connect Wallet
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Connect your wallet to start staking and earning rewards
-            </p>
-            <ConnectButton />
-          </CardContent>
-        </Card>
-        
-        {/* Show protocol stats even when not connected */}
-        <div className="w-full max-w-2xl">
-          <ProtocolStats />
+      <div className="relative min-h-[60vh]">
+        {/* Gradient background */}
+        <div className="absolute inset-0 gradient-radial opacity-50"></div>
+        <div className="relative flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+          <Card className="w-full max-w-md glass-effect border-primary/20 shadow-2xl">
+            <CardHeader className="text-center">
+              <CardTitle className="flex items-center justify-center gap-2 gradient-primary bg-clip-text text-transparent">
+                <Wallet className="h-6 w-6 text-primary" />
+                Connect Wallet
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+              <p className="text-muted-foreground">
+                Connect your wallet to start staking and earning rewards
+              </p>
+              <ConnectButton />
+            </CardContent>
+          </Card>
+          
+          {/* Show protocol stats even when not connected */}
+          <div className="w-full max-w-2xl">
+            <ProtocolStats />
+          </div>
         </div>
       </div>
     );
@@ -41,17 +45,41 @@ export function StakingDashboard() {
 
 
   return (
-    <div className="space-y-8">
-      {/* Protocol Overview */}
-      <ProtocolStats />
+    <div className="relative space-y-8">
+      {/* Premium gradient background */}
+      <div className="absolute inset-0 gradient-radial opacity-30 pointer-events-none"></div>
+      
+      <div className="relative space-y-8">
+        {/* Protocol Overview */}
+        <ProtocolStats />
 
-      {/* Main Dashboard */}
-      <Tabs defaultValue="stake" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="stake">Stake</TabsTrigger>
-          <TabsTrigger value="position">Position</TabsTrigger>
-          <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
-          <TabsTrigger value="emergency">Emergency</TabsTrigger>
+        {/* Main Dashboard */}
+        <Tabs defaultValue="stake" className="w-full">
+        <TabsList className="grid w-full grid-cols-4 glass-effect border-primary/20 shadow-lg">
+          <TabsTrigger 
+            value="stake" 
+            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-primary data-[state=active]:!to-primary/80 data-[state=active]:!text-black data-[state=active]:!border-primary/30 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20"
+          >
+            Stake
+          </TabsTrigger>
+          <TabsTrigger 
+            value="position" 
+            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-secondary data-[state=active]:!to-secondary/80 data-[state=active]:!text-blue-800 data-[state=active]:!border-secondary/30 data-[state=active]:shadow-lg data-[state=active]:shadow-secondary/20"
+          >
+            Position
+          </TabsTrigger>
+          <TabsTrigger 
+            value="withdraw" 
+            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-amber-500 data-[state=active]:!to-amber-600 data-[state=active]:!text-black data-[state=active]:!border-amber-500/30 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-500/20"
+          >
+            Withdraw
+          </TabsTrigger>
+          <TabsTrigger 
+            value="emergency" 
+            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-destructive data-[state=active]:!to-red-600 data-[state=active]:!text-white data-[state=active]:!border-destructive/30 data-[state=active]:shadow-lg data-[state=active]:shadow-destructive/20"
+          >
+            Emergency
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="stake" className="mt-6">
@@ -115,7 +143,9 @@ export function StakingDashboard() {
             <UserPosition />
           </div>
         </TabsContent>
-      </Tabs>
+
+        </Tabs>
+      </div>
     </div>
   );
 }
