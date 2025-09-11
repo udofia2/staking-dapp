@@ -2,34 +2,43 @@ import { useReadContract, useAccount } from 'wagmi';
 import { STAKING_CONTRACT_ADDRESS, TOKEN_CONTRACT_ADDRESS, STAKING_ABI, TOKEN_ABI } from '../config/contracts';
 import { formatEther } from 'viem';
 import type { UserData } from '../types/contracts';
+import { useStakingEvents } from './useStakingEvents';
 
 export function useUserData(): UserData & { isLoading: boolean } {
   const { address } = useAccount();
 
-  const { data: userDetails, isLoading: userDetailsLoading } = useReadContract({
+  const { data: userDetails, isLoading: userDetailsLoading, refetch: refetchUserDetails } = useReadContract({
     address: STAKING_CONTRACT_ADDRESS,
     abi: STAKING_ABI,
     functionName: 'getUserDetails',
     args: address ? [address] : undefined,
-    query: { enabled: !!address }
+    query: { enabled: !!address, refetchInterval: 30000 }
   });
 
-  console.log('user details: ', userDetails)
-  const { data: tokenBalance, isLoading: balanceLoading } = useReadContract({
+  const { data: tokenBalance, isLoading: balanceLoading, refetch: refetchTokenBalance  } = useReadContract({
     address: TOKEN_CONTRACT_ADDRESS,
     abi: TOKEN_ABI,
     functionName: 'balanceOf',
     args: address ? [address] : undefined,
-    query: { enabled: !!address }
+    query: { enabled: !!address, refetchInterval: 30000 }
   });
 
-  const { data: allowance, isLoading: allowanceLoading } = useReadContract({
+  const { data: allowance, isLoading: allowanceLoading, refetch: refetchAllowance } = useReadContract({
     address: TOKEN_CONTRACT_ADDRESS,
     abi: TOKEN_ABI,
     functionName: 'allowance',
     args: address ? [address, STAKING_CONTRACT_ADDRESS] : undefined,
-    query: { enabled: !!address }
+    query: { enabled: !!address, refetchInterval: 60000 }
   });
+
+  useStakingEvents({
+    onUserStakingChange: () => {
+      refetchUserDetails();
+      refetchTokenBalance();
+      refetchAllowance();
+    }
+  });
+
 
   return {
     stakedAmount: userDetails ? formatEther(userDetails.stakedAmount) : '0',

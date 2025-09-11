@@ -21,7 +21,7 @@ export function Layout({ children }: LayoutProps) {
       
       <footer className="border-t mt-auto">
         <div className="container mx-auto px-4 py-6 text-center text-muted-foreground">
-          <p>&copy; 2024 Staking DApp. Built with React + TypeScript + Ethers.js</p>
+          <p>&copy; 2024 Staking DApp. Built with React + TypeScript + Viem + RainbowKit</p>
         </div>
       </footer>
     </div>

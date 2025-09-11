@@ -1,95 +1,144 @@
-export const STAKING_CONTRACT_ADDRESS = import.meta.env.VITE_STAKING_CONTRACT as `0x${string}`;
-export const TOKEN_CONTRACT_ADDRESS = import.meta.env.VITE_TOKEN_CONTRACT as `0x${string}`;
+export const STAKING_CONTRACT_ADDRESS = import.meta.env
+  .VITE_STAKING_CONTRACT as `0x${string}`;
+export const TOKEN_CONTRACT_ADDRESS = import.meta.env
+  .VITE_TOKEN_CONTRACT as `0x${string}`;
 
 export const STAKING_ABI = [
   {
-    type: 'function',
-    name: 'stake',
-    inputs: [{ name: '_amount', type: 'uint256' }],
+    type: "function",
+    name: "stake",
+    inputs: [{ name: "_amount", type: "uint256" }],
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    name: 'withdraw',
-    inputs: [{ name: '_amount', type: 'uint256' }],
+    type: "function",
+    name: "withdraw",
+    inputs: [{ name: "_amount", type: "uint256" }],
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    name: 'claimRewards',
+    type: "function",
+    name: "claimRewards",
     inputs: [],
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    name: 'emergencyWithdraw',
+    type: "function",
+    name: "emergencyWithdraw",
     inputs: [],
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    name: 'getUserDetails',
-    inputs: [{ name: '_user', type: 'address' }],
+    type: "function",
+    name: "getUserDetails",
+    inputs: [{ name: "_user", type: "address" }],
     outputs: [
       {
-        type: 'tuple',
+        type: "tuple",
         components: [
-          { name: 'stakedAmount', type: 'uint256' },
-          { name: 'lastStakeTimestamp', type: 'uint256' },
-          { name: 'pendingRewards', type: 'uint256' },
-          { name: 'timeUntilUnlock', type: 'uint256' },
-          { name: 'canWithdraw', type: 'bool' },
+          { name: "stakedAmount", type: "uint256" },
+          { name: "lastStakeTimestamp", type: "uint256" },
+          { name: "pendingRewards", type: "uint256" },
+          { name: "timeUntilUnlock", type: "uint256" },
+          { name: "canWithdraw", type: "bool" },
         ],
       },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    name: 'totalStaked',
+    type: "function",
+    name: "totalStaked",
     inputs: [],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    name: 'currentRewardRate',
+    type: "function",
+    name: "currentRewardRate",
     inputs: [],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "initialApr",
+    inputs: [],
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "minLockDuration",
+    inputs: [],
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
+  },
+// Events
+  {
+    type: "event",
+    name: "Staked",
+    inputs: [
+      { name: "user", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "Withdrawn",
+    inputs: [
+      { name: "user", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "RewardsClaimed",
+    inputs: [
+      { name: "user", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "EmergencyWithdraw",
+    inputs: [
+      { name: "user", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+    ],
   },
 ] as const;
 
 export const TOKEN_ABI = [
   {
-    type: 'function',
-    name: 'balanceOf',
-    inputs: [{ name: 'owner', type: 'address' }],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
+    type: "function",
+    name: "balanceOf",
+    inputs: [{ name: "owner", type: "address" }],
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    name: 'approve',
+    type: "function",
+    name: "approve",
     inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'amount', type: 'uint256' },
+      { name: "spender", type: "address" },
+      { name: "amount", type: "uint256" },
     ],
-    outputs: [{ type: 'bool' }],
-    stateMutability: 'nonpayable',
+    outputs: [{ type: "bool" }],
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    name: 'allowance',
+    type: "function",
+    name: "allowance",
     inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
+      { name: "owner", type: "address" },
+      { name: "spender", type: "address" },
     ],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
   },
 ] as const;
