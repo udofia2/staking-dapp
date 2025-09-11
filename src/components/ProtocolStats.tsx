@@ -109,7 +109,7 @@ export function ProtocolStats() {
             <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
               <span className="text-white font-bold">✨</span>
             </div>
-            <h4 className="text-lg font-bold gradient-primary bg-clip-text text-white">Protocol Features</h4>
+            <h4 className="text-lg font-bold gradient-primary bg-clip-text text-white p-1">Protocol Features</h4>
             <InfoTooltip 
               side="bottom"
               variant="premium"

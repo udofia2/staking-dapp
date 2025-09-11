@@ -55,7 +55,7 @@ export function UserPosition() {
                 side="left"
               />
             </div>
-            <p className="text-4xl font-bold gradient-primary bg-clip-text text-transparent tracking-tight">
+            <p className="text-4xl font-bold gradient-primary bg-clip-text text-white tracking-tight p-1">
               {formatTokenAmount(stakedAmount)} MTK
             </p>
           </div>

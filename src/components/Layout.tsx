@@ -20,7 +20,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
               <span className="text-white font-bold text-lg">S</span>
             </div>
-            <h1 className="text-2xl font-bold gradient-primary bg-clip-text text-white">
+            <h1 className="text-2xl font-bold gradient-primary bg-clip-text text-white p-1">
               Staking DApp
             </h1>
           </div>
@@ -36,7 +36,7 @@ export function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4 py-6 text-center">
           <p className="text-muted-foreground">
             &copy; 2024 Staking DApp. Built with 
-            <span className="gradient-primary bg-clip-text text-transparent font-semibold"> React + TypeScript + Viem + RainbowKit</span>
+            <span className="gradient-primary bg-clip-text text-white font-semibold p-1"> React + TypeScript + Viem + RainbowKit</span>
           </p>
         </div>
       </footer>

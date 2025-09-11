@@ -58,13 +58,28 @@ export function StakingDashboard() {
         <TabsList className="grid w-full grid-cols-4 glass-effect border-primary/20 shadow-lg">
           <TabsTrigger 
             value="stake" 
-            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-primary data-[state=active]:!to-primary/80 data-[state=active]:!text-black data-[state=active]:!border-primary/30 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20"
+            className="    data-[state=active]:!bg-gradient-to-r 
+              data-[state=active]:!from-blue-500 
+              data-[state=active]:!to-cyan-500 
+              data-[state=active]:!text-white 
+              data-[state=active]:!border-blue-400/40 
+              data-[state=active]:shadow-lg 
+              data-[state=active]:shadow-blue-500/30
+            "
           >
             Stake
           </TabsTrigger>
           <TabsTrigger 
             value="position" 
-            className="data-[state=active]:!bg-gradient-to-r data-[state=active]:!from-secondary data-[state=active]:!to-secondary/80 data-[state=active]:!text-blue-800 data-[state=active]:!border-secondary/30 data-[state=active]:shadow-lg data-[state=active]:shadow-secondary/20"
+             className="
+                data-[state=active]:!bg-gradient-to-r 
+                data-[state=active]:!from-indigo-500 
+                data-[state=active]:!to-blue-600 
+                data-[state=active]:!text-white 
+                data-[state=active]:!border-indigo-400/40 
+                data-[state=active]:shadow-lg 
+                data-[state=active]:shadow-indigo-500/30
+              "
           >
             Position
           </TabsTrigger>
