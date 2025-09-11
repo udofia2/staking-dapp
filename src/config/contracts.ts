@@ -78,13 +78,30 @@ export const STAKING_ABI = [
     outputs: [{ type: "uint256" }],
     stateMutability: "view",
   },
-// Events
+  {
+    type: "function",
+    name: "setInitialApr",
+    inputs: [{ name: "_newApr", type: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "setMinLockDuration",
+    inputs: [{ name: "_newDuration", type: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  // Events
   {
     type: "event",
     name: "Staked",
     inputs: [
       { name: "user", type: "address", indexed: true },
       { name: "amount", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+      { name: "newTotalStaked", type: "uint256", indexed: false },
+      { name: "currentRewardRate", type: "uint256", indexed: false },
     ],
   },
   {
@@ -93,6 +110,10 @@ export const STAKING_ABI = [
     inputs: [
       { name: "user", type: "address", indexed: true },
       { name: "amount", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+      { name: "newTotalStaked", type: "uint256", indexed: false },
+      { name: "currentRewardRate", type: "uint256", indexed: false },
+      { name: "rewardsAccrued", type: "uint256", indexed: false },
     ],
   },
   {
@@ -101,14 +122,48 @@ export const STAKING_ABI = [
     inputs: [
       { name: "user", type: "address", indexed: true },
       { name: "amount", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+      { name: "newPendingRewards", type: "uint256", indexed: false },
+      { name: "totalStaked", type: "uint256", indexed: false },
     ],
   },
   {
     type: "event",
-    name: "EmergencyWithdraw",
+    name: "EmergencyWithdrawn",
     inputs: [
       { name: "user", type: "address", indexed: true },
       { name: "amount", type: "uint256", indexed: false },
+      { name: "penalty", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+      { name: "newTotalStaked", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "RewardRateUpdated",
+    inputs: [
+      { name: "oldRate", type: "uint256", indexed: false },
+      { name: "newRate", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+      { name: "totalStaked", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "InitialAprUpdated",
+    inputs: [
+      { name: "oldApr", type: "uint256", indexed: false },
+      { name: "newApr", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "MinLockDurationUpdated",
+    inputs: [
+      { name: "oldDuration", type: "uint256", indexed: false },
+      { name: "newDuration", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
     ],
   },
 ] as const;
