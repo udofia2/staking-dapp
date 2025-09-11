@@ -31,7 +31,7 @@ export function useUserData(): UserData & { isLoading: boolean, debug?: any } {
       retry: 3,
     },
   });
-  // console.log("user details", userDetails);
+  
   const {
     data: tokenBalance,
     isLoading: balanceLoading,
@@ -48,7 +48,7 @@ export function useUserData(): UserData & { isLoading: boolean, debug?: any } {
       retry: 3,
     },
   });
-  // console.log("token balance", tokenBalance);
+  
   const {
     data: allowance,
     isLoading: allowanceLoading,

@@ -7,6 +7,7 @@ import { useStaking } from '../hooks/useStaking';
 import { useUserData } from '../hooks/useUserData';
 import { formatTokenAmount } from '../utils/formatting';
 import { AlertTriangle } from 'lucide-react';
+import { InfoTooltip } from './ui/info-tooltip';
 
 export function WithdrawForm() {
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -48,12 +49,23 @@ export function WithdrawForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Withdraw Tokens</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          Withdraw Tokens
+          <InfoTooltip 
+            content="Withdraw your staked tokens after the lock period has ended. You can only withdraw if your tokens are unlocked."
+          />
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="withdraw-amount">Amount to Withdraw</Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="withdraw-amount">Amount to Withdraw</Label>
+              <InfoTooltip 
+                content="Enter the amount of staked tokens you want to withdraw. Must be less than or equal to your staked amount."
+                side="right"
+              />
+            </div>
             <div className="flex space-x-2">
               <Input
                 id="withdraw-amount"
@@ -74,9 +86,13 @@ export function WithdrawForm() {
                 Max
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Staked: {formatTokenAmount(stakedAmount)} MTK
-            </p>
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <span>Staked: {formatTokenAmount(stakedAmount)} MTK</span>
+              <InfoTooltip 
+                content="Your current staked token balance available for withdrawal"
+                side="left"
+              />
+            </div>
             {hasInsufficientStake && (
               <p className="text-sm text-destructive">
                 Amount exceeds staked balance
@@ -90,6 +106,10 @@ export function WithdrawForm() {
               <p className="text-sm text-orange-700 dark:text-orange-400">
                 Your tokens are still locked. Wait for the lock period to end.
               </p>
+              <InfoTooltip 
+                content="Tokens must remain staked for the minimum lock duration before they can be withdrawn normally."
+                side="top"
+              />
             </div>
           )}
 

@@ -8,6 +8,7 @@ import { EmergencyWithdraw } from './EmergencyWithdraw';
 import { ProtocolStats } from './ProtocolStats';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Wallet } from 'lucide-react';
+import { InfoTooltip } from './ui/info-tooltip';
 
 export function StakingDashboard() {
   const { isConnected } = useAccount();
@@ -38,6 +39,7 @@ export function StakingDashboard() {
     );
   }
 
+
   return (
     <div className="space-y-8">
       {/* Protocol Overview */}
@@ -62,35 +64,38 @@ export function StakingDashboard() {
         <TabsContent value="position" className="mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <UserPosition />
-            <Card>
+            <Card className="border-2 border-dashed border-muted-foreground/20 bg-gradient-to-br from-background via-muted/10 to-background">
               <CardHeader>
-                <CardTitle>Staking Information</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  Staking Overview
+                  <InfoTooltip 
+                    content={
+                      <div className="space-y-2">
+                        <p><strong>How it works:</strong></p>
+                        <p>• Stake tokens to earn dynamic APR rewards</p>
+                        <p>• APR starts at 250% and decreases with TVL</p>
+                        <p>• Rewards calculated per minute</p>
+                        <p>• Minimum 1-day lock period</p>
+                        <p>• Claim rewards anytime</p>
+                      </div>
+                    }
+                  />
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Lock Period:</span>
-                    <span className="font-medium">1 Day</span>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-muted/30">
+                    <span className="text-sm font-medium">Lock Period</span>
+                    <span className="text-sm">1 Day</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Reward Calculation:</span>
-                    <span className="font-medium">Per Minute</span>
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-muted/30">
+                    <span className="text-sm font-medium">Reward Calculation</span>
+                    <span className="text-sm">Per Minute</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Emergency Penalty:</span>
-                    <span className="font-medium text-destructive">50%</span>
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-muted/30">
+                    <span className="text-sm font-medium">Emergency Penalty</span>
+                    <span className="text-sm text-destructive font-semibold">50%</span>
                   </div>
-                </div>
-                
-                <div className="pt-4 border-t">
-                  <h4 className="font-medium mb-2">How it works:</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• Stake tokens to earn dynamic APR rewards</li>
-                    <li>• APR starts at 250% and decreases with TVL</li>
-                    <li>• Rewards calculated per minute</li>
-                    <li>• Minimum 1-day lock period</li>
-                    <li>• Claim rewards anytime</li>
-                  </ul>
                 </div>
               </CardContent>
             </Card>

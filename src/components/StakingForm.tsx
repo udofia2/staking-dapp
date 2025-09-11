@@ -7,6 +7,7 @@ import { useStaking } from '../hooks/useStaking';
 import { useTokenApproval } from '../hooks/useTokenApproval';
 import { useUserData } from '../hooks/useUserData';
 import { formatTokenAmount } from '../utils/formatting';
+import { InfoTooltip } from './ui/info-tooltip';
 
 export function StakingForm() {
   const [stakeAmount, setStakeAmount] = useState('');
@@ -34,15 +35,26 @@ export function StakingForm() {
     setStakeAmount(tokenBalance);
   };
 
-  return (
+    return (
     <Card>
       <CardHeader>
-        <CardTitle>Stake Tokens</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          Stake Tokens
+          <InfoTooltip 
+            content="Stake your MTK tokens to earn rewards. You'll need to approve the contract first if this is your first time staking."
+          />
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="stake-amount">Amount to Stake</Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="stake-amount">Amount to Stake</Label>
+              <InfoTooltip 
+                content="Enter the amount of MTK tokens you want to stake. You can click 'Max' to stake your entire balance."
+                side="right"
+              />
+            </div>
             <div className="flex space-x-2">
               <Input
                 id="stake-amount"
@@ -62,9 +74,13 @@ export function StakingForm() {
                 Max
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Balance: {formatTokenAmount(tokenBalance)} MTK
-            </p>
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <span>Balance: {formatTokenAmount(tokenBalance)} MTK</span>
+              <InfoTooltip 
+                content="Your current MTK token balance available for staking"
+                side="left"
+              />
+            </div>
             {hasInsufficientBalance && (
               <p className="text-sm text-destructive">
                 Insufficient balance
@@ -88,9 +104,15 @@ export function StakingForm() {
           </Button>
 
           {needsApproval && (
-            <p className="text-sm text-muted-foreground">
-              You need to approve tokens before staking
-            </p>
+            <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+              <InfoTooltip 
+                content="Token approval is a one-time transaction that allows the staking contract to transfer your tokens when you stake."
+                side="top"
+              />
+              <p className="text-sm text-blue-700 dark:text-blue-400">
+                You need to approve tokens before staking
+              </p>
+            </div>
           )}
         </form>
       </CardContent>

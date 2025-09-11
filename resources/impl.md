@@ -1,90 +1,141 @@
-import { useReadContract, useAccount } from 'wagmi';
-import { STAKING_CONTRACT_ADDRESS, TOKEN_CONTRACT_ADDRESS, STAKING_ABI, TOKEN_ABI } from '../config/contracts';
-import { formatEther } from 'viem';
-import type { UserData } from '../types/contracts';
-import { useStakingEvents } from './useStakingEvents';
-import { useContractValidation } from './useContractValidation';
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { useStaking } from '../hooks/useStaking';
+import { useUserData } from '../hooks/useUserData';
+import { formatTokenAmount } from '../utils/formatting';
+import { AlertTriangle } from 'lucide-react';
+import { InfoTooltip } from './ui/info-tooltip';
 
-export function useUserData(): UserData & { isLoading: boolean; debug?: any } {
-  const { address } = useAccount();
-  const validation = useContractValidation();
+export function WithdrawForm() {
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  
+  const { withdraw, isPending } = useStaking();
+  const { stakedAmount, canWithdraw, isLoading } = useUserData();
 
-  const { data: userDetails, isLoading: userDetailsLoading, error: userDetailsError, refetch: refetchUserDetails } = useReadContract({
-    address: STAKING_CONTRACT_ADDRESS,
-    abi: STAKING_ABI,
-    functionName: 'getUserDetails',
-    args: address ? [address] : undefined,
-    query: { 
-      enabled: !!address && validation.stakingContractActive, 
-      refetchInterval: 30000,
-      retry: 3
-    }
-  });
+  const hasStake = parseFloat(stakedAmount) > 0;
+  const hasInsufficientStake = withdrawAmount && parseFloat(stakedAmount) < parseFloat(withdrawAmount);
 
-  const { data: tokenBalance, isLoading: balanceLoading, error: balanceError, refetch: refetchTokenBalance } = useReadContract({
-    address: TOKEN_CONTRACT_ADDRESS,
-    abi: TOKEN_ABI,
-    functionName: 'balanceOf',
-    args: address ? [address] : undefined,
-    query: { 
-      enabled: !!address && validation.tokenContractActive, 
-      refetchInterval: 30000,
-      retry: 3
-    }
-  });
-
-  const { data: allowance, isLoading: allowanceLoading, error: allowanceError, refetch: refetchAllowance } = useReadContract({
-    address: TOKEN_CONTRACT_ADDRESS,
-    abi: TOKEN_ABI,
-    functionName: 'allowance',
-    args: address ? [address, STAKING_CONTRACT_ADDRESS] : undefined,
-    query: { 
-      enabled: !!address && validation.tokenContractActive, 
-      refetchInterval: 60000,
-      retry: 3
-    }
-  });
-
-  useStakingEvents({
-    onUserStakingChange: () => {
-      refetchUserDetails();
-      refetchTokenBalance();
-      refetchAllowance();
-    }
-  });
-
-  // Debug logging
-  console.log('=== CONTRACT DEBUG ===');
-  console.log('Validation:', validation);
-  console.log('User Details:', { data: userDetails, loading: userDetailsLoading, error: userDetailsError?.message });
-  console.log('Token Balance:', { data: tokenBalance, loading: balanceLoading, error: balanceError?.message });
-  console.log('Allowance:', { data: allowance, loading: allowanceLoading, error: allowanceError?.message });
-  console.log('User Address:', address);
-  console.log('Contract Addresses:', {
-    staking: STAKING_CONTRACT_ADDRESS,
-    token: TOKEN_CONTRACT_ADDRESS
-  });
-
-  return {
-    stakedAmount: userDetails ? formatEther(userDetails.stakedAmount) : '0',
-    pendingRewards: userDetails ? formatEther(userDetails.pendingRewards) : '0',
-    timeUntilUnlock: userDetails ? Number(userDetails.timeUntilUnlock) : 0,
-    canWithdraw: userDetails ? userDetails.canWithdraw : false,
-    tokenBalance: tokenBalance ? formatEther(tokenBalance) : '0',
-    allowance: allowance ? formatEther(allowance) : '0',
-    isLoading: userDetailsLoading || balanceLoading || allowanceLoading || validation.isLoading,
-    debug: {
-      validation,
-      errors: {
-        userDetails: userDetailsError?.message,
-        tokenBalance: balanceError?.message,
-        allowance: allowanceError?.message
-      },
-      rawData: {
-        userDetails,
-        tokenBalance,
-        allowance
-      }
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!withdrawAmount || !canWithdraw) return;
+    
+    await withdraw(withdrawAmount);
+    setWithdrawAmount('');
   };
+
+  const setMaxAmount = () => {
+    setWithdrawAmount(stakedAmount);
+  };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Withdraw</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4 animate-pulse">
+            <div className="h-10 bg-muted rounded"></div>
+            <div className="h-10 bg-muted rounded"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          Withdraw Tokens
+          <InfoTooltip 
+            content="Withdraw your staked tokens after the lock period has ended. You can only withdraw if your tokens are unlocked."
+          />
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="withdraw-amount">Amount to Withdraw</Label>
+              <InfoTooltip 
+                content="Enter the amount of staked tokens you want to withdraw. Must be less than or equal to your staked amount."
+                side="right"
+              />
+            </div>
+            <div className="flex space-x-2">
+              <Input
+                id="withdraw-amount"
+                type="number"
+                placeholder="0.0"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                disabled={!canWithdraw}
+                step="0.000001"
+                min="0"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={setMaxAmount}
+                disabled={!hasStake || !canWithdraw}
+              >
+                Max
+              </Button>
+            </div>
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <span>Staked: {formatTokenAmount(stakedAmount)} MTK</span>
+              <InfoTooltip 
+                content="Your current staked token balance available for withdrawal"
+                side="left"
+              />
+            </div>
+            {hasInsufficientStake && (
+              <p className="text-sm text-destructive">
+                Amount exceeds staked balance
+              </p>
+            )}
+          </div>
+
+          {!canWithdraw && hasStake && (
+            <div className="flex items-center gap-2 p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
+              <AlertTriangle className="h-4 w-4 text-orange-500" />
+              <p className="text-sm text-orange-700 dark:text-orange-400">
+                Your tokens are still locked. Wait for the lock period to end.
+              </p>
+              <InfoTooltip 
+                content="Tokens must remain staked for the minimum lock duration before they can be withdrawn normally."
+                side="top"
+              />
+            </div>
+          )}
+
+          <Button 
+            type="submit"
+            disabled={
+              isPending || 
+              !canWithdraw || 
+              !withdrawAmount || 
+              hasInsufficientStake ||
+              parseFloat(withdrawAmount) <= 0
+            }
+            className="w-full"
+            variant={canWithdraw ? "default" : "outline"}
+          >
+            {canWithdraw ? 'Withdraw Tokens' : 'Withdraw Locked'}
+            {isPending && '...'}
+          </Button>
+
+          {!hasStake && (
+            <p className="text-sm text-muted-foreground text-center">
+              No tokens staked to withdraw
+            </p>
+          )}
+        </form>
+      </CardContent>
+    </Card>
+  );
 }

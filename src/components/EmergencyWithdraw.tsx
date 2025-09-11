@@ -5,6 +5,7 @@ import { useStaking } from '../hooks/useStaking';
 import { useUserData } from '../hooks/useUserData';
 import { formatTokenAmount } from '../utils/formatting';
 import { AlertTriangle, Shield } from 'lucide-react';
+import { InfoTooltip } from './ui/info-tooltip';
 
 export function EmergencyWithdraw() {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -40,24 +41,36 @@ export function EmergencyWithdraw() {
     );
   }
 
+  
   return (
     <Card className="border-destructive/20">
-      <CardHeader>
+      <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-destructive">
           <AlertTriangle className="h-5 w-5" />
           Emergency Withdraw
+          <InfoTooltip 
+            content="Emergency withdrawal allows immediate access to your staked tokens but incurs a 50% penalty. Only use this feature in urgent situations where you need immediate liquidity."
+            iconClassName="text-destructive hover:text-destructive/80"
+            side="bottom"
+          />
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="bg-destructive/10 p-4 rounded-lg space-y-3">
-          <div className="flex items-start gap-2">
-            <Shield className="h-5 w-5 text-destructive mt-0.5" />
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-destructive">
-                Emergency Withdrawal Warning
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Emergency withdrawal incurs a 50% penalty. Only use this in urgent situations.
+        <div className="bg-gradient-to-r from-destructive/5 via-destructive/10 to-destructive/5 p-6 rounded-xl border-2 border-destructive/20 space-y-4">
+          <div className="flex items-start gap-3">
+            <Shield className="h-6 w-6 text-destructive mt-0.5 flex-shrink-0" />
+            <div className="space-y-3 flex-1">
+              <div className="flex items-center gap-2">
+                <p className="text-base font-semibold text-destructive">
+                  High Penalty Warning
+                </p>
+                <InfoTooltip 
+                  content="This penalty helps maintain protocol stability and discourages frivolous emergency withdrawals."
+                  iconClassName="text-destructive"
+                />
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Emergency withdrawal immediately unlocks your tokens but applies a significant penalty.
               </p>
             </div>
           </div>
